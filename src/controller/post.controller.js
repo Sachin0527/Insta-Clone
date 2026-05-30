@@ -48,7 +48,6 @@ const userId = req.user.id;
 const postId = req.params.postId;
 
 if (!postId) {
-
     throw new ApiError(400, "Post ID is required");
 
 }
