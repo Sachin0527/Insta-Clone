@@ -1,6 +1,6 @@
 const express = require('express')
 const idenfiyUser = require('../middleware/auth.middleware')
-const { followingUser , unfollowingUser} = require('../controller/user.controller')
+const { followingUser , unfollowingUser ,acceptFollowRequest} = require('../controller/user.controller')
 
 
 const userRotuer = express.Router();
@@ -20,5 +20,8 @@ userRotuer.post('/follow/:username',idenfiyUser,followingUser);
  */
 
 userRotuer.post('/unfollow/:username',idenfiyUser,unfollowingUser);
+
+
+userRotuer.post('/accept-follow/:username',idenfiyUser,acceptFollowRequest)
 
 module.exports =  userRotuer
