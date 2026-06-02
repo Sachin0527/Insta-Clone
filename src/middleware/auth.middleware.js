@@ -4,7 +4,6 @@ const ApiError = require("../utils/ApiError");
 
 const identifyUser =asyncWrapper(async(req , res , next)=>{
     const token = req.cookies?.token
-    console.log(token)
 
     if(!token){
         throw new ApiError(401, "Token not provided, Unauthorized access")

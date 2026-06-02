@@ -19,9 +19,9 @@ const register = asyncWrapper(async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = await user.create({ username, email, password: hashedPassword, bio });
-        const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+        const token = jwt.sign({ id: newUser._id  , username: newUser.username }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
-        const createdUser = await user.findById(user.id).select("-password")
+        const createdUser = await user.findById(newUser._id).select("-password")
 
         res.cookie("token", token);
         res.status(201).json(new ApiResponse(201, { message: "User registered successfully", user: createdUser, token }));
@@ -54,7 +54,7 @@ const login = asyncWrapper(async (req, res) => {
         }
         const loggedInUser = await user.findById(existingUser._id).select("-password");
 
-        const token = jwt.sign({ id: existingUser._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+        const token = jwt.sign({ id: existingUser._id , username: existingUser.username }, process.env.JWT_SECRET, { expiresIn: "1h" });
         res.cookie("token", token);
         res.status(200).json(new ApiResponse(200, { message: "User logged in successfully", loggedInUser, token }));
     } catch (error) {
